@@ -7,3 +7,4 @@
 
 #hi
 rnorm(n=4)
+rexp(4)
