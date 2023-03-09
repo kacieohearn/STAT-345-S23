@@ -8,3 +8,6 @@
 #hi
 rnorm(n=4)
 rexp(4)
+
+rnorm(4, mean=1, sd=0.5)
+#hi
