@@ -13,3 +13,9 @@ rnorm(4, mean=1, sd=0.5)
 #hi
 
 #wtf
+
+usethis::use_git_config(user.name="kacieohearn", user.email = "kohearn42@gmail.com")
+usethis::create_github_token()
+credentials::set_github_pat("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")
+
+#send help
