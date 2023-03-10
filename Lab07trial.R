@@ -19,3 +19,7 @@ usethis::create_github_token()
 credentials::set_github_pat("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")
 
 #send help
+
+
+#im editting this again
+poisson(log)
