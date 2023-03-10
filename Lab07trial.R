@@ -16,10 +16,19 @@ rnorm(4, mean=1, sd=0.5)
 
 usethis::use_git_config(user.name="kacieohearn", user.email = "kohearn42@gmail.com")
 usethis::create_github_token()
-credentials::set_github_pat("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")
+credentials::set_github_pat("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")
 
 #send help
 
 
-#im editting this again
-poisson(log)
+
+
+
+
+
+
+
+
+
+
+#hi
