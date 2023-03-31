@@ -1,0 +1,168 @@
+---
+title: "STAT 345 Midterm Project"
+font: 12pt
+date: "Due March 31"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+> "Our offense is like the Pythagorean Theorem. There is no answer!", _Shaquille O'Neal_
+
+```{r, message=FALSE}
+#import necessary packages
+library(devtools)
+library(ggplot2)
+library(tidyverse)
+library(maps)
+library(mapdata)
+library(ggthemes)
+library(dplyr)
+
+#Import the nbastatR dataset from github:
+#Sys.setenv(GITHUB_PAT = "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")
+devtools::install_github("abresler/nbastatR")
+library(nbastatR)
+#usethis::create_github_token()
+
+#this makes sure buffer is big enough
+Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
+
+#tibbles of each year's shots (a tibble is basically a dataframe- a collection of data)
+shots97 <- teams_shots(teams = "Milwaukee Bucks", seasons = 1997) 
+shots98 <- teams_shots(teams = "Milwaukee Bucks", seasons = 1998)
+shots99 <- teams_shots(teams = "Milwaukee Bucks", seasons = 1999)
+shots00 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2000)
+shots01 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2001)
+shots02 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2002)
+shots03 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2003)
+shots04 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2004)
+shots05 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2005)
+shots06 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2006)
+shots07 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2007)
+shots08 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2008)
+shots09 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2009)
+shots10 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2010)
+shots11 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2011)
+shots12 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2012)
+shots13 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2013)
+shots14 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2014)
+shots15 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2015)
+shots16 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2016)
+shots17 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2017)
+shots18 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2018)
+shots19 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2019)
+shots20 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2020)
+shots21 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2021)
+shots22 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2022)
+shots23 <- teams_shots(teams = "Milwaukee Bucks", seasons = 2023)
+
+#combine each year's shot data into one tibble
+MKE.shots<- bind_rows(shots97, shots98, shots99, shots00, shots01, shots02, shots03, shots04, shots05, shots06, shots07, shots08, shots09, shots10, shots11, shots12, shots13, shots14, shots15, shots16, shots17, shots18, shots19, shots20, shots21, shots22, shots23)
+
+
+###########court design#############
+
+#creating a court by first using the dataset created above
+shot.chart <- MKE.shots %>% 
+  #divide location coordinates by 10, color by make/miss
+  ggplot(mapping=aes(locationX/10, locationY/10, color=isShotMade)) + 
+  #makes points more transparent
+  geom_point(alpha=.4) + 
+  
+  #Lines of court
+  geom_segment(aes(22,-4,xend=22, yend=10)) + 
+  geom_segment(aes(-25, -4, xend=25, yend=-4)) +
+  geom_segment(aes(-22, -4, xend= -22, yend=10))+
+  geom_segment(aes(-6,-4, xend=-6, yend=19)) + 
+  geom_segment(aes(6, -4, xend=6, yend=19)) + 
+  geom_segment(aes(-25,-4,xend=-25, yend=43)) + 
+  geom_segment(aes(25,-4, xend=25, yend=43)) + 
+  geom_segment(aes(-8, 19, xend=8, yend=19)) + 
+  geom_segment(aes(-8, -4, xend=-8, yend=19)) + 
+  geom_segment(aes(8,-4, xend=8, yend=19)) + 
+  #free throw to 3 pt arch
+  geom_curve(aes(-8, 19, xend=8, yend=19), curvature=-0.35) + 
+  #3 pt arch
+  geom_curve(aes(-22, 10, xend=22, yend=10), curvature= -0.3)+
+  #renames legend title, labels, and colors
+  scale_color_discrete(name="Is Shot Made?", labels = c("No","Yes"), type=c("dark gray", "dark green")) +
+  #delete x label
+  xlab(NULL) +
+  #delete y label
+  ylab(NULL) + 
+  #set title of graph
+  ggtitle("Milwaukee Bucks Shots") + 
+  #display a graph of shot data for each year
+  facet_wrap(~yearSeason, nrow=5)
+
+#prints shot chart
+shot.chart
+
+```
+   
+   
+   
+   
+```{r}
+
+giannis18 <- teams_shots(teams= "Milwaukee Bucks", seasons=2018) %>% 
+  filter(., namePlayer=="Giannis Antetokounmpo")
+giannis19 <- teams_shots(teams= "Milwaukee Bucks", seasons=2019) %>% 
+  filter(., namePlayer=="Giannis Antetokounmpo")
+giannis20 <- teams_shots(teams= "Milwaukee Bucks", seasons=2020) %>% 
+  filter(., namePlayer=="Giannis Antetokounmpo")
+giannis21 <- teams_shots(teams= "Milwaukee Bucks", seasons=2021) %>% 
+  filter(., namePlayer=="Giannis Antetokounmpo")
+giannis22 <- teams_shots(teams= "Milwaukee Bucks", seasons=2022) %>% 
+  filter(., namePlayer=="Giannis Antetokounmpo")
+giannis23 <- teams_shots(teams= "Milwaukee Bucks", seasons=2023) %>% 
+  filter(., namePlayer=="Giannis Antetokounmpo")
+
+#combine each year's shot data into one tibble
+giannis.shots<- bind_rows(giannis18, giannis19, giannis20, giannis21, giannis22, giannis23)
+
+giannis.shots
+
+
+
+giannis.chart <- giannis.shots %>% 
+  #divide location coordinates by 10, color by make/miss, shape by make/miss
+  ggplot(mapping=aes(locationX/10, locationY/10, color=isShotMade)) + 
+  #makes points more transparent
+  geom_point(alpha=.4) + 
+  
+  #Lines of court
+  geom_segment(aes(22,-4,xend=22, yend=10)) + 
+  geom_segment(aes(-25, -4, xend=25, yend=-4)) +
+  geom_segment(aes(-22, -4, xend= -22, yend=10))+
+  geom_segment(aes(-6,-4, xend=-6, yend=19)) + 
+  geom_segment(aes(6, -4, xend=6, yend=19)) + 
+  geom_segment(aes(-25,-4,xend=-25, yend=43)) + 
+  geom_segment(aes(25,-4, xend=25, yend=43)) + 
+  geom_segment(aes(-8, 19, xend=8, yend=19)) + 
+  geom_segment(aes(-8, -4, xend=-8, yend=19)) + 
+  geom_segment(aes(8,-4, xend=8, yend=19)) + 
+  #free throw to 3 pt arch
+  geom_curve(aes(-8, 19, xend=8, yend=19), curvature=-0.35) + 
+  #3 pt arch
+  geom_curve(aes(-22, 10, xend=22, yend=10), curvature= -0.3)+
+  #renames legend title, entries, and colors
+  
+  scale_color_discrete(name="Is Shot Made?", labels = c("No","Yes"), type=c("dark gray", "dark green")) +
+  #delete x label
+  xlab(NULL) +
+  #delete y label
+  ylab(NULL) + 
+  #set title of graph
+  ggtitle("Giannis Antetokounmpo Shots") + 
+  #display shot data by year
+  facet_wrap(~yearSeason, nrow=5)
+
+giannis.chart
+
+
+```
+   
+Analyzing Giannis Antetokounmpo's shots from 2018-2023, it appears that his game shifted from shooting a variety of mid-range jumpers to focusing heavily on driving to the hoop to shoot layups or dunk. This trend of Giannis's appears to be the driving reason behind the Bucks's overall increase in made layups in 2023. Another trend in Giannis's shots is that he makes more shots on the right-hand side of the court. This is because he is right-handed, so it is natural that his right hand would be his better ball-handling hand, especially for a forward that doesn't have the strongest ball-handling abilities. Thus, the Bucks can expect that defense will try to force Giannis to go to the left side of the court, since that's where he is historically weakest.
